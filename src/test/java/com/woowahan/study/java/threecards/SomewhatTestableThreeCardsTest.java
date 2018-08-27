@@ -1,13 +1,10 @@
 package com.woowahan.study.java.threecards;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.*;
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SomewhatTestableThreeCardsTest
 {

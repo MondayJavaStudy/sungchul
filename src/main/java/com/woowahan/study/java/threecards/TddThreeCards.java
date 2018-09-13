@@ -6,8 +6,20 @@ public class TddThreeCards
 {
     public static List<Triple> find(List<Integer> cards, int target)
     {
-        Collections.sort(cards);
+        List<Integer> sortedCards = sortCards(cards);
+        Set<Triple> bucket = getTriples(sortedCards, target);
+        return sortTriples(bucket);
+    }
 
+    static List<Integer> sortCards(Collection<Integer> cards)
+    {
+        List<Integer> result = new ArrayList<>(cards);
+        Collections.sort(result);
+        return result;
+    }
+
+    static Set<Triple> getTriples(List<Integer> cards, int target)
+    {
         Set<Triple> bucket = new HashSet<>();
 
         for(int i1 = 0; i1 < cards.size(); i1 ++)
@@ -18,15 +30,19 @@ public class TddThreeCards
                     if(triple.getCard1()+ triple.getCard2()+ triple.getCard3() == target)
                         bucket.add(triple);
                 }
+        return bucket;
+    }
 
-        ArrayList<Triple> result = new ArrayList<>(bucket);
+    static List<Triple> sortTriples(Set<Triple> bucket)
+    {
+        List<Triple> result = new ArrayList<>(bucket);
         result.sort(new Comparator<Triple>() {
             @Override
             public int compare(Triple o1, Triple o2)
             {
                 return o1.card1 != o2.card1 ? o1.card1 - o2.card1 :
-                       o1.card2 != o2.card2 ? o1.card2 - o2.card2 :
-                       o1.card3 != o2.card3 ? o1.card3 - o2.card3 : 0;
+                        o1.card2 != o2.card2 ? o1.card2 - o2.card2 :
+                                o1.card3 != o2.card3 ? o1.card3 - o2.card3 : 0;
             }
         });
         return result;
@@ -35,8 +51,13 @@ public class TddThreeCards
     public static final class Triple
     {
         private final int card1;
+            public int getCard1() { return card1; }
+
         private final int card2;
+            public int getCard2() { return card2; }
+
         private final int card3;
+            public int getCard3() { return card3; }
 
         public Triple(int card1, int card2, int card3)
         {
@@ -45,52 +66,25 @@ public class TddThreeCards
             this.card3 = card3;
         }
 
-        public int getCard1()
-        {
-            return card1;
-        }
-
-        public int getCard2()
-        {
-            return card2;
-        }
-
-        public int getCard3()
-        {
-            return card3;
-        }
-
         @Override
         public boolean equals(Object obj)
         {
-            if(obj == null) return false;
-            if(obj == this) return true; // 대부분 생략함
-            if(!(obj instanceof Triple)) return false;
+            if(obj == null || !(obj instanceof Triple)) return false;
 
             Triple that = (Triple) obj;
-
-            return (this.card1 == that.card1 &&
-                    this.card2 == that.card2 &&
-                    this.card3 == that.card3);
+            return (this.card1 == that.card1 && this.card2 == that.card2 && this.card3 == that.card3);
         }
 
         @Override
         public int hashCode()
         {
-            int result = Integer.hashCode(card1);
-            result = 31 * result + Integer.hashCode(card2);
-            result = 31 * result + Integer.hashCode(card3);
-            return result;
+            return (Integer.hashCode(card1)*31 + Integer.hashCode(card2))*31 + Integer.hashCode(card3);
         }
 
         @Override
         public String toString()
         {
-            return "Triple{" +
-                    "card1=" + card1 +
-                    ", card2=" + card2 +
-                    ", card3=" + card3 +
-                    '}';
+            return String.format("Triple{card1=%s, card2=%s, card3=%s}", card1, card2, card3);
         }
     }
 }

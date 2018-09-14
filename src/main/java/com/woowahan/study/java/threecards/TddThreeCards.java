@@ -78,7 +78,7 @@ public class TddThreeCards
         @Override
         public int hashCode()
         {
-            return (Integer.hashCode(card1)*31 + Integer.hashCode(card2))*31 + Integer.hashCode(card3);
+            return (card1*31 + card2)*31 + card3;
         }
 
         @Override

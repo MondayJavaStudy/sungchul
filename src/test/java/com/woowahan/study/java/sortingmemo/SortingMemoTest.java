@@ -9,16 +9,50 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SortingMemoTest
 {
     @Test
-    void test()
+    void 결과는_정렬되어야함()
     {
         String[] memos = new String[]{
-                "2018/7/3 배민은행의 구조도를 손에 넣었다. 필요한 장비는 이런거 저런거 해서 각자 준비해야한다.",
-                "타깃 은행은 잠실에 있는 배민은행으로 한다. 18년06월13일",
-                "배민은행앞 별다방에서 18-06-12에 만나기로 함"
+                "2018/7/3 메모1",
+                "2018년6월13일 메모2",
+                "2018-6-12 메모3"
         };
 
         List<String> result = SortingMemo.sort(Arrays.asList(memos[0], memos[1], memos[2]));
+        assertEquals(Arrays.asList(memos[2], memos[1], memos[0]), result);
+    }
 
+    @Test
+    void 두자리_연도는_20XX로_처리되어야_함()
+    {
+        String[] memos = new String[]{"18/7/3 메모1", "2017/1/1 메모2"};
+
+        List<String> result = SortingMemo.sort(Arrays.asList(memos[0], memos[1]));
+        assertEquals(Arrays.asList(memos[1], memos[0]), result);
+    }
+
+    @Test
+    void 공백없이_포함된_날짜도_인식해야함()
+    {
+        String[] memos = new String[]{
+                "메모2018/7/3중간에포함된날짜",
+                "2018년6월13일날짜로시작하는메모",
+                "메모뒤에붙은날짜2018-6-12"
+        };
+
+        List<String> result = SortingMemo.sort(Arrays.asList(memos[0], memos[1], memos[2]));
+        assertEquals(Arrays.asList(memos[2], memos[1], memos[0]), result);
+    }
+
+    @Test
+    void 달일이_10_이하고_앞에_0이_붙은_경우()
+    {
+        String[] memos = new String[]{
+                "2018/07/03 메모1",
+                "2018년06월03일 메모2",
+                "2018-06-02 메모3"
+        };
+
+        List<String> result = SortingMemo.sort(Arrays.asList(memos[0], memos[1], memos[2]));
         assertEquals(Arrays.asList(memos[2], memos[1], memos[0]), result);
     }
 }
